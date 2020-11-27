@@ -1,1 +1,42 @@
-# python
+# Pacman-GhostBuster
+- Câu 1: Update beliefs: 
+  - Tạo biến allPossible với kiểu dữ liệu Counter (với key: vị trí, value: xác suất)
+  - TH1: ma bị bắt: cập nhật allPossible[vị trí trong tù của ma] = 1
+  - TH2:
+    - Chạy loop trên các list vị trí có thể của ma
+    - allPossible[vị trí] = P(noisyDistance | trueDistance) * beliefs[vị trí] = P(noisyDistance | vị trí) * beliefs[vị trí]
+    - Sau đó cập nhất beliefs = biến đã tạo
+- Câu 2: Update beliefs:
+  - Loop trên các vị trí có thể của ma
+  - Lấy xác suất của các vị trí mới từ vị trí hiện tại của ma
+  - Sau đó cập nhật xác suất tại từng vị trí mới = P(vị trí mới tại t + 1|vị trí cũ tại t) * beliefs[vị trí cũ]
+- Câu 3:
+  - Tìm ra list vị trí của những con ma còn sống
+  - Chạy loop trên list đó tìm con ma gần nhất
+  - Chạy loop trên các actionLegal của pacman để tìm action giúp đến gần con ma gần nhất hơn
+- Câu 4:
+  - Hàm initializeUniformly:
+    - Lấy ra các vị trí có thể của con ma = legalPositions
+    - Để phân bố như nhau: vị trí = legalPositions[i % len(legalPositions)] (i thứ tự trong list particles)
+  - Hàm getBeliefDistribution: sum (số lần vị trí trong particles)/numsParticle
+  - Hàm observe:
+    - TH1: ma bị bắt: Cập nhật vị trí tù của ma trong particles
+    - TH2:
+      - weights[vị trí] = P(noisyDistance | vị trí) * beliefs[vị trí]
+      - Nếu các vị trị đều có weight = 0 thì tạo lại particles
+      - Cập nhật lại particles bằng hàm sample trong util
+- Câu 5:
+  - Như Câu 2: lấy được xác suất của các vị trí mới từ vị trí hiện tại (particles)
+  - Với các xác suất random lấy được vị trí (util.sample)
+  - Cập nhật lại các vị trí
+- Câu 6:
+  - Hàm initializeParticles:
+    - Sử dụng itertools.product biến đổi tạo ra 1 list các vị trí
+    - Thêm vào particles
+    - shuffle để thứ tự random
+  - Hàm getBeliefDistribution: tương tự câu 4
+  - Hàm observe:
+    - Tương tự với hàm observe ở câu 4
+    - Tuy nhiên weight(tại 1 particle) += tích P(noisydistance|trueDistance) của các ma (Với ma bị bắt mặc định = 1)
+- Câu 7:
+  - Tương tự Câu 6 chỉ cần thêm loop với i = số ma để tính vị trí của từng con ma
